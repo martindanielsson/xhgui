@@ -74,10 +74,10 @@ class Xhgui_Db_Mapper
             $date = new DateTime();
             try {
                 $date->sub(new DateInterval($search['limit']));
-                $conditions['meta.request_ts']['$gte'] = new MongoDate($date->getTimestamp());
+                $conditions['meta.request_ts']['$gte'] = new \MongoDB\BSON\UTCDatetime($date->format('u'));
             } catch (\Exception $e) {
                 // Match a day in the future so we match nothing, as it's likely an invalid format
-                $conditions['meta.request_ts']['$gte'] = new MongoDate(time() + 86400);
+                $conditions['meta.request_ts']['$gte'] = new \MongoDB\BSON\UTCDatetime((time() + 86400) * 1000);
             }
         }
 

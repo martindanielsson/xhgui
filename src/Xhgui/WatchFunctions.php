@@ -24,15 +24,15 @@ class Xhgui_WatchFunctions
         }
 
         if (!empty($data['removed']) && isset($data['_id'])) {
-            $this->_collection->remove(
-                array('_id' => new MongoId($data['_id'])),
+            $this->_collection->deleteOne(
+                array('_id' => new \MongoDB\BSON\ObjectID($data['_id'])),
                 array('w' => 1)
             );
             return true;
         }
 
         if (empty($data['_id'])) {
-            $this->_collection->insert(
+            $this->_collection->insertOne(
                 $data,
                 array('w' => 1)
             );
@@ -40,8 +40,8 @@ class Xhgui_WatchFunctions
         }
 
 
-        $data['_id'] = new MongoId($data['_id']);
-        $this->_collection->update(
+        $data['_id'] = new \MongoDB\BSON\ObjectID($data['_id']);
+        $this->_collection->replaceOne(
             array('_id' => $data['_id']),
             $data,
             array('w' => 1)
