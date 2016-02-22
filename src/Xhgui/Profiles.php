@@ -8,7 +8,7 @@ class Xhgui_Profiles
 
     protected $_mapper;
 
-    public function __construct(MongoDb $db)
+    public function __construct(MongoDB\Database $db)
     {
         $this->_collection = $db->results;
         $this->_mapper = new Xhgui_Db_Mapper();
@@ -42,7 +42,7 @@ class Xhgui_Profiles
     public function get($id)
     {
         return $this->_wrap($this->_collection->findOne(array(
-            '_id' => new MongoId($id)
+            '_id' => new MongoDB\BSON\ObjectID($id)
         )));
     }
 
@@ -70,9 +70,9 @@ class Xhgui_Profiles
     {
         $opts = $this->_mapper->convert($options);
 
-        $totalRows = $this->_collection->find(
+        $totalRows = $this->_collection->count(
             $opts['conditions'],
-            array('_id' => 1))->count();
+            array('_id' => 1));
 
         $totalPages = max(ceil($totalRows / $opts['perPage']), 1);
         $page = 1;
@@ -90,15 +90,20 @@ class Xhgui_Profiles
         }
 
         if ($projection === false) {
-            $cursor = $this->_collection->find($opts['conditions'])
-                ->sort($opts['sort'])
-                ->skip(($page - 1) * $opts['perPage'])
-                ->limit($opts['perPage']);
+            $options = array(
+                'sort' => $opts['sort'],
+                'skip' => ($page - 1) * $opts['perPage'],
+                'limit' => $opts['perPage']
+            );
+            $cursor = $this->_collection->find($opts['conditions'], $options);
         } else {
-            $cursor = $this->_collection->find($opts['conditions'], $projection)
-                ->sort($opts['sort'])
-                ->skip(($page - 1) * $opts['perPage'])
-                ->limit($opts['perPage']);
+            $options = array(
+                'sort' => $opts['sort'],
+                'skip' => ($page - 1) * $opts['perPage'],
+                'limit' => $opts['perPage'],
+                'projection' => $projection
+            );
+            $cursor = $this->_collection->find($opts['conditions'], $options);
         }
 
         return array(
@@ -258,10 +263,11 @@ class Xhgui_Profiles
      * Does unchecked inserts.
      *
      * @param array $profile The profile data to save.
+     * @return \MongoDB\InsertOneResult
      */
     public function insert($profile)
     {
-        return $this->_collection->insert($profile, array('w' => 0));
+        return $this->_collection->insertOne($profile, array('w' => 0));
     }
 
     /**
@@ -288,13 +294,16 @@ class Xhgui_Profiles
             throw new Exception('No profile data found.');
         }
 
-        if (is_array($data)) {
+        if ($data instanceof \MongoDB\Model\BSONDocument) {
             return new Xhgui_Profile($data);
         }
+
         $results = array();
+
         foreach ($data as $row) {
             $results[] = new Xhgui_Profile($row);
         }
+
         return $results;
     }
 }

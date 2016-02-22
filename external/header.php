@@ -73,8 +73,8 @@ if (file_exists($dir . '/config/config.php')) {
 }
 unset($dir);
 
-if (!extension_loaded('mongo') && Xhgui_Config::read('save.handler') === 'mongodb') {
-    error_log('xhgui - extension mongo not loaded');
+if (!extension_loaded('mongodb') && Xhgui_Config::read('save.handler') === 'mongodb') {
+    error_log('xhgui - extension mongodb not loaded');
     return;
 }
 
@@ -130,17 +130,18 @@ register_shutdown_function(
         $time = array_key_exists('REQUEST_TIME', $_SERVER)
             ? $_SERVER['REQUEST_TIME']
             : time();
-        $requestTimeFloat = explode('.', $_SERVER['REQUEST_TIME_FLOAT']);
-        if (!isset($requestTimeFloat[1])) {
-            $requestTimeFloat[1] = 0;
-        }
 
         if (Xhgui_Config::read('save.handler') === 'file') {
+            $requestTimeFloat = explode('.', $_SERVER['REQUEST_TIME_FLOAT']);
+            if (!isset($requestTimeFloat[1])) {
+                $requestTimeFloat[1] = 0;
+            }
+
             $requestTs = array('sec' => $time, 'usec' => 0);
             $requestTsMicro = array('sec' => $requestTimeFloat[0], 'usec' => $requestTimeFloat[1]);
         } else {
-            $requestTs = new MongoDate($time);
-            $requestTsMicro = new MongoDate($requestTimeFloat[0], $requestTimeFloat[1]);
+            $requestTs = new MongoDB\BSON\UTCDatetime($time * 1000);
+            $requestTsMicro = new MongoDB\BSON\UTCDatetime($_SERVER['REQUEST_TIME_FLOAT'] * 1000);
         }
 
         $data['meta'] = array(

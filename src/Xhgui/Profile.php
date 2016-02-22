@@ -19,11 +19,12 @@ class Xhgui_Profile
     protected $_keys = array('ct', 'wt', 'cpu', 'mu', 'pmu');
     protected $_exclusiveKeys = array('ewt', 'ecpu', 'emu', 'epmu');
     protected $_functionCount;
-
+    
     public function __construct($profile, $convert = true)
     {
         $this->_data = $profile;
-        if (!empty($profile['profile']) && $convert) {
+
+        if (!empty($profile->profile) && $convert) {
             $this->_process();
         }
     }
@@ -145,17 +146,21 @@ class Xhgui_Profile
     public function getMeta($key = null)
     {
         $data = $this->_data['meta'];
+
         if ($key === null) {
             return $data;
         }
+
         $parts = explode('.', $key);
+
         foreach ($parts as $key) {
-            if (is_array($data) && isset($data[$key])) {
-                $data =& $data[$key];
+            if (isset($data->{$key})) {
+                $data =& $data->{$key};
             } else {
                 return null;
             }
         }
+
         return $data;
     }
 
@@ -254,7 +259,8 @@ class Xhgui_Profile
         $current = $this->_collapsed[$symbol];
         foreach ($current['parents'] as $parent) {
             if (isset($this->_collapsed[$parent])) {
-                $parents[] = array('function' => $parent) + $this->_collapsed[$parent];
+                $this->_collapsed[$parent]->append(array('function' => $parent));
+                $parents[] = $this->_collapsed[$parent];
             }
         }
         return $parents;
@@ -271,11 +277,13 @@ class Xhgui_Profile
      */
     protected function _getChildren($symbol, $metric = null, $threshold = 0) {
         $children = array();
+
         if (!isset($this->_indexed[$symbol])) {
             return $children;
         }
 
         $total = 0;
+
         if (isset($metric)) {
             $top = $this->_indexed[self::NO_PARENT];
             // Not always 'main()'
@@ -290,8 +298,12 @@ class Xhgui_Profile
             ) {
                 continue;
             }
-            $children[] = $data + array('function' => $name);
+
+            $data->append(array('function' => $name));
+
+            $children[] = $data;
         }
+
         return $children;
     }
 

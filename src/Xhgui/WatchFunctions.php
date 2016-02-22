@@ -3,7 +3,7 @@ class Xhgui_WatchFunctions
 {
     protected $_collection;
 
-    public function __construct(MongoDb $db)
+    public function __construct(MongoDB\Database $db)
     {
         $this->_collection = $db->watches;
     }
