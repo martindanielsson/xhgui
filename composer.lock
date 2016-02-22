@@ -4,9 +4,69 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "ce1482e32bf9a4a370e36bb9d805605b",
-    "content-hash": "615cd33ffb5b3be1ea616f9de39d4a67",
+    "hash": "40d84da78062692a8799c1023ff3727d",
+    "content-hash": "9062579ea3a9d49dd3df73ffd6e4537c",
     "packages": [
+        {
+            "name": "mongodb/mongodb",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mongodb/mongo-php-library.git",
+                "reference": "851a560864281cbf91fe182aefed85bfc3395031"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mongodb/mongo-php-library/zipball/851a560864281cbf91fe182aefed85bfc3395031",
+                "reference": "851a560864281cbf91fe182aefed85bfc3395031",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mongodb": "^1.1.0",
+                "php": ">=5.4"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "MongoDB\\": "src/"
+                },
+                "files": [
+                    "src/functions.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Jeremy Mikola",
+                    "email": "jmikola@gmail.com"
+                },
+                {
+                    "name": "Hannes Magnusson",
+                    "email": "bjori@mongodb.com"
+                },
+                {
+                    "name": "Derick Rethans",
+                    "email": "github@derickrethans.nl"
+                }
+            ],
+            "description": "MongoDB driver library",
+            "homepage": "https://jira.mongodb.org/browse/PHPLIB",
+            "keywords": [
+                "database",
+                "driver",
+                "mongodb",
+                "persistence"
+            ],
+            "time": "2016-01-21 19:43:25"
+        },
         {
             "name": "pimple/pimple",
             "version": "v1.0.2",
@@ -18,7 +78,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/silexphp/Pimple/zipball/ae11e57e8c2bb414b2ff93396dbbfc0eb92feb94",
-                "reference": "v1.0.2",
+                "reference": "ae11e57e8c2bb414b2ff93396dbbfc0eb92feb94",
                 "shasum": ""
             },
             "require": {
@@ -64,7 +124,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/slimphp/Slim/zipball/2e540cc392644b9b5cdcc57e5576db5a92ca2149",
-                "reference": "2.3.1",
+                "reference": "2e540cc392644b9b5cdcc57e5576db5a92ca2149",
                 "shasum": ""
             },
             "require": {
@@ -109,7 +169,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/slimphp/Slim-Views/zipball/d5eca1c0932aadf7255d83f3ed02ffc07c3c8297",
-                "reference": "0.1.0",
+                "reference": "d5eca1c0932aadf7255d83f3ed02ffc07c3c8297",
                 "shasum": ""
             },
             "require": {
@@ -128,14 +188,14 @@
             ],
             "authors": [
                 {
-                    "name": "Andrew Smith",
-                    "email": "a.smith@silentworks.co.uk",
-                    "homepage": "http://thoughts.silentworks.co.uk/"
-                },
-                {
                     "name": "Josh Lockhart",
                     "email": "info@joshlockhart.com",
                     "homepage": "http://www.joshlockhart.com/"
+                },
+                {
+                    "name": "Andrew Smith",
+                    "email": "a.smith@silentworks.co.uk",
+                    "homepage": "http://thoughts.silentworks.co.uk/"
                 }
             ],
             "description": "Twig View Parser package for the Slim Framework",
@@ -534,7 +594,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/5794e3c5c5ba0fb037b11d8151add2a07fa82875",
-                "reference": "1.2.3",
+                "reference": "5794e3c5c5ba0fb037b11d8151add2a07fa82875",
                 "shasum": ""
             },
             "require": {
